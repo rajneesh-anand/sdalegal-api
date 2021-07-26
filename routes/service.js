@@ -56,42 +56,70 @@ router.post("/", async (req, res, next) => {
       resolve({ fields, files });
     });
   });
-  console.log(data);
-  uploadPhototToawsS3(data)
-    .then(async (pres) => {
-      if (pres.message === "success") {
-        try {
+
+  if (Object.keys(data.files).length !== 0) {
+    try {
+      uploadPhototToawsS3(data).then(async (pres) => {
+        if (pres.message === "success") {
           await prisma.services.create({
             data: {
-              ServiceName: data.fields.service_name,
-              Slug: data.fields.slug,
-              Images: awsImagePath,
-              Description: data.fields.description,
-              Category: data.fields.category,
-              SubCategories: JSON.parse(data.fields.sub_category),
-              ServiceFee: Number(data.fields.service_fee),
-              SaleFee: Number(data.fields.sale_fee),
-              Discount: Number(data.fields.discount),
-              Gst: Number(data.fields.gst),
-              Usage: data.fields.usage,
-              Status: JSON.parse(data.fields.status),
+              serviceName: data.fields.service_name,
+              slug: data.fields.slug,
+              images: awsImagePath,
+              description: data.fields.description,
+              category: data.fields.category,
+              subCategories: JSON.parse(data.fields.sub_category),
+              serviceFee: Number(data.fields.service_fee),
+              saleFee: Number(data.fields.sale_fee),
+              discount: Number(data.fields.discount),
+              gst: Number(data.fields.gst),
+              usage: data.fields.usage,
+              status: JSON.parse(data.fields.status),
             },
           });
-
           res.status(200).json({
             msg: "success",
           });
-        } catch (error) {
-          console.log(error);
-          return next(error);
-        } finally {
-          async () => {
-            await prisma.$disconnect();
-          };
         }
-      }
-    })
-    .catch((error) => console.log(error));
+      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
+    } finally {
+      async () => {
+        await prisma.$disconnect();
+      };
+    }
+  } else {
+    try {
+      await prisma.services.create({
+        data: {
+          serviceName: data.fields.service_name,
+          slug: data.fields.slug,
+          description: data.fields.description,
+          category: data.fields.category,
+          subCategories: JSON.parse(data.fields.sub_category),
+          serviceFee: Number(data.fields.service_fee),
+          saleFee: Number(data.fields.sale_fee),
+          discount: Number(data.fields.discount),
+          gst: Number(data.fields.gst),
+          usage: data.fields.usage,
+          status: JSON.parse(data.fields.status),
+        },
+      });
+
+      res.status(200).json({
+        msg: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
+    } finally {
+      async () => {
+        await prisma.$disconnect();
+      };
+    }
+  }
 });
 
 router.post("/:id", async (req, res, next) => {
@@ -112,18 +140,18 @@ router.post("/:id", async (req, res, next) => {
             await prisma.services.update({
               where: { id: Number(serviceId) },
               data: {
-                ServiceName: data.fields.service_name,
-                Slug: data.fields.slug,
-                Images: awsImagePath,
-                Description: data.fields.description,
-                Category: data.fields.category,
-                SubCategories: JSON.parse(data.fields.sub_category),
-                ServiceFee: Number(data.fields.service_fee),
-                SaleFee: Number(data.fields.sale_fee),
-                Discount: Number(data.fields.discount),
-                Gst: Number(data.fields.gst),
-                Usage: data.fields.usage,
-                Status: JSON.parse(data.fields.status),
+                serviceName: data.fields.service_name,
+                slug: data.fields.slug,
+                images: awsImagePath,
+                description: data.fields.description,
+                category: data.fields.category,
+                subCategories: JSON.parse(data.fields.sub_category),
+                serviceFee: Number(data.fields.service_fee),
+                saleFee: Number(data.fields.sale_fee),
+                discount: Number(data.fields.discount),
+                gst: Number(data.fields.gst),
+                usage: data.fields.usage,
+                status: JSON.parse(data.fields.status),
               },
             });
 
@@ -146,17 +174,17 @@ router.post("/:id", async (req, res, next) => {
       await prisma.services.update({
         where: { id: Number(serviceId) },
         data: {
-          ServiceName: data.fields.service_name,
-          Slug: data.fields.slug,
-          Description: data.fields.description,
-          Category: data.fields.category,
-          SubCategories: JSON.parse(data.fields.sub_category),
-          ServiceFee: Number(data.fields.service_fee),
-          SaleFee: Number(data.fields.sale_fee),
-          Discount: Number(data.fields.discount),
-          Gst: Number(data.fields.gst),
-          Usage: data.fields.usage,
-          Status: JSON.parse(data.fields.status),
+          serviceName: data.fields.service_name,
+          slug: data.fields.slug,
+          description: data.fields.description,
+          category: data.fields.category,
+          subCategories: JSON.parse(data.fields.sub_category),
+          serviceFee: Number(data.fields.service_fee),
+          saleFee: Number(data.fields.sale_fee),
+          discount: Number(data.fields.discount),
+          gst: Number(data.fields.gst),
+          usage: data.fields.usage,
+          status: JSON.parse(data.fields.status),
         },
       });
       res.status(200).json({
