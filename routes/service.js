@@ -67,7 +67,6 @@ router.post("/", async (req, res, next) => {
               slug: data.fields.slug,
               images: awsImagePath,
               description: data.fields.description,
-              category: data.fields.category,
               subCategories: JSON.parse(data.fields.sub_category),
               serviceFee: Number(data.fields.service_fee),
               saleFee: Number(data.fields.sale_fee),
@@ -75,6 +74,7 @@ router.post("/", async (req, res, next) => {
               gst: Number(data.fields.gst),
               usage: data.fields.usage,
               status: JSON.parse(data.fields.status),
+              category: { connect: { name: data.fields.category } },
             },
           });
           res.status(200).json({
@@ -97,7 +97,6 @@ router.post("/", async (req, res, next) => {
           serviceName: data.fields.service_name,
           slug: data.fields.slug,
           description: data.fields.description,
-          category: data.fields.category,
           subCategories: JSON.parse(data.fields.sub_category),
           serviceFee: Number(data.fields.service_fee),
           saleFee: Number(data.fields.sale_fee),
@@ -105,6 +104,7 @@ router.post("/", async (req, res, next) => {
           gst: Number(data.fields.gst),
           usage: data.fields.usage,
           status: JSON.parse(data.fields.status),
+          category: { connect: { name: data.fields.category } },
         },
       });
 
@@ -144,7 +144,7 @@ router.post("/:id", async (req, res, next) => {
                 slug: data.fields.slug,
                 images: awsImagePath,
                 description: data.fields.description,
-                category: data.fields.category,
+                category: { connect: { name: data.fields.category } },
                 subCategories: JSON.parse(data.fields.sub_category),
                 serviceFee: Number(data.fields.service_fee),
                 saleFee: Number(data.fields.sale_fee),
@@ -177,7 +177,7 @@ router.post("/:id", async (req, res, next) => {
           serviceName: data.fields.service_name,
           slug: data.fields.slug,
           description: data.fields.description,
-          category: data.fields.category,
+          category: { connect: { name: data.fields.category } },
           subCategories: JSON.parse(data.fields.sub_category),
           serviceFee: Number(data.fields.service_fee),
           saleFee: Number(data.fields.sale_fee),
